@@ -2,11 +2,14 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router'
 import api from '../utils/api'
+import { useAuth } from '../context/AuthContext'
 
 function Register() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('');
+
+  const { refreshUser } = useAuth()
 
   const navigate = useNavigate()
 
@@ -15,6 +18,7 @@ function Register() {
 
     try{
       await api.post("/register",{ name, email, password });
+      await refreshUser()
       navigate("/root")
     }catch(error){
       console.log("error in register:",error);

@@ -26,7 +26,7 @@ interface AuthContextType {
     loading: boolean;
     isAuthenticated: boolean;
 
-    login: (data: LoginPayload) => Promise<void>;
+    login: () => Promise<void>;
     logout: () => Promise<void>;
     refreshUser: () => Promise<void>;
 }

@@ -25,7 +25,7 @@ export const updateRole = catchAsync(async (req, res) => {
 
 export const getRoles = catchAsync(async (req, res) => {
 
-  const query = req.user?.isSuperAdmin ? { name: { $ne: "SUPER_ADMIN" } } : {};
+  const query = req.user?.isSuperAdmin ? { name: { $ne: "SUPER_ADMIN" } } : { isSystem: false };
 
   const roles = await Role.find(query).populate("permissions", "label description");
 

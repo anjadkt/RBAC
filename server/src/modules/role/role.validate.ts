@@ -24,6 +24,10 @@ const roleBodySchema = z.object({
         .trim()
         .max(255, "Description cannot exceed 255 characters")
         .optional(),
+
+    isSystem: z
+        .boolean()
+        .default(false),
 });
 
 export const roleSchema = z.object({

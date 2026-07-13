@@ -15,7 +15,12 @@ const roleSchema = new Schema(
         type: Schema.Types.ObjectId,
         ref: "Permission",
       },
-    ]
+    ],
+
+    isSystem: {
+      type: Boolean,
+      default: false
+    }
   },
   {
     timestamps: true,

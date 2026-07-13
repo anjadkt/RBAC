@@ -1,4 +1,3 @@
-import { createAccessToken, createRefreshToken } from '../../utils/createTokens'
 import { accessCookieOptions, refreshCookieOptions } from '../../utils/cookieOptions'
 import { catchAsync } from '../../utils/catchAsync'
 import ApiResponse from '../../utils/ApiResponse'
@@ -7,10 +6,7 @@ import * as authService from './auth.service'
 
 export const registerController = catchAsync(async (req, res) => {
 
-  const user = await authService.register(req.body);
-
-  const accessToken = createAccessToken({ _id: user._id.toString(), role: user.role, email: user.email });
-  const refreshToken = createRefreshToken(user._id.toString());
+  const { user, accessToken, refreshToken } = await authService.register(req.body);
 
   return res
     .status(201)
@@ -20,7 +16,7 @@ export const registerController = catchAsync(async (req, res) => {
       new ApiResponse(
         201,
         "User registered successfully.",
-        { id: user._id, name: user.name, email: user.email }
+        user
       )
     )
 
@@ -28,21 +24,13 @@ export const registerController = catchAsync(async (req, res) => {
 
 export const loginController = catchAsync(async (req, res) => {
 
-  const user = await authService.login(req.body);
-
-  const accessToken = createAccessToken({
-    _id: user._id.toString(),
-    role: user.role,
-    email: user.email,
-    isSuperAdmin: user.isSuperAdmin || false
-  })
-  const refreshToken = createRefreshToken(user._id.toString());
+  const { user, accessToken, refreshToken } = await authService.login(req.body);
 
   return res
     .status(200)
     .cookie('access_token', accessToken, accessCookieOptions)
     .cookie('refresh_token', refreshToken, refreshCookieOptions)
-    .json(new ApiResponse(200, "Login successful.", { id: user._id, name: user.name, email: user.email }))
+    .json(new ApiResponse(200, "Login successful.", user))
 
 })
 
@@ -56,9 +44,18 @@ export const getMeController = catchAsync(async (req, res) => {
 
 export const refreshController = catchAsync(async (req, res) => {
 
+  const { accessToken, refreshToken } = await authService.refresh(req.cookies.refresh_token || "");
+
+  return res
+    .status(200)
+    .cookie('access_token', accessToken, accessCookieOptions)
+    .cookie('refresh_token', refreshToken, refreshCookieOptions)
+    .json(new ApiResponse(200, "Tokens refreshed successfully.", null));
 })
 
-export const logoutController = catchAsync(async (_req, res) => {
+export const logoutController = catchAsync(async (req, res) => {
+
+  await authService.logout(req.user?.userId || "");
   return res
     .clearCookie('access_token', accessCookieOptions)
     .clearCookie('refresh_token', refreshCookieOptions)

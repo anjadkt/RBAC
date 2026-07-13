@@ -5,14 +5,15 @@ const userSchema = new Schema(
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
     password: { type: String, required: true },
-    role : {
-      type : Types.ObjectId,
-      ref : "Role"
+    role: {
+      type: Types.ObjectId,
+      ref: "Role"
     },
-    isSuperAdmin : {
-      type : Boolean,
-      default : false
-    }
+    isSuperAdmin: {
+      type: Boolean,
+      default: false
+    },
+    refreshToken: String
   },
   { timestamps: true },
 )

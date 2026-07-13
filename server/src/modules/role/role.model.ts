@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { ROLE_LEVELS } from "./role.constant";
 
 const roleSchema = new Schema(
   {
@@ -20,6 +21,12 @@ const roleSchema = new Schema(
     isSystem: {
       type: Boolean,
       default: false
+    },
+
+    level: {
+      type: Number,
+      enum: ROLE_LEVELS,
+      default: 100
     }
   },
   {

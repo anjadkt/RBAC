@@ -6,7 +6,7 @@ export function createAccessToken(user: PayloadTypes) {
 
     return jwt.sign(
         {
-            userId: String(user._id),
+            userId: String(user.userId),
             email: user.email,
             role: user.role,
             isSuperAdmin: user.isSuperAdmin

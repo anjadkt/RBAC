@@ -4,6 +4,7 @@ import permissionRoutes from "./modules/permission/permission.routes";
 import roleRoutes from "./modules/role/role.routes";
 import moduleRoutes from './modules/module/module.routes';
 import operationRoutes from './modules/operation/operation.routes';
+import usersRoutes from './modules/users/users.routes';
 
 const router = Router();
 
@@ -12,6 +13,7 @@ router.use("/permission", permissionRoutes);
 router.use("/role", roleRoutes);
 router.use("/module", moduleRoutes);
 router.use("/operation", operationRoutes);
+router.use("/users", usersRoutes);
 
 
 export default router;

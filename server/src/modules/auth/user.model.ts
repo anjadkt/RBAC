@@ -4,7 +4,7 @@ const userSchema = new Schema(
   {
     name: { type: String, required: true, trim: true },
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-    password: { type: String, required: true },
+    password: { type: String },
     role: {
       type: Types.ObjectId,
       ref: "Role"
@@ -13,7 +13,18 @@ const userSchema = new Schema(
       type: Boolean,
       default: false
     },
-    refreshToken: String
+    refreshToken: String,
+
+    isActive: {
+      type: Boolean,
+      default: false
+    },
+
+    expiresAt: {
+      type: Date,
+      default: () => new Date(Date.now() + 5 * 60 * 1000),
+      index: { expires: 0 },
+    }
   },
   { timestamps: true },
 )

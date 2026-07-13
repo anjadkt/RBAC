@@ -1,6 +1,6 @@
 
 export type PayloadTypes = {
-    _id: unknown;
+    userId: unknown;
     email: string;
     role?: unknown;
     isSuperAdmin?: boolean

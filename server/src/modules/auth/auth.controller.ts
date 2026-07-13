@@ -4,24 +4,6 @@ import ApiResponse from '../../utils/ApiResponse'
 import * as authService from './auth.service'
 
 
-export const registerController = catchAsync(async (req, res) => {
-
-  const { user, accessToken, refreshToken } = await authService.register(req.body);
-
-  return res
-    .status(201)
-    .cookie('access_token', accessToken, accessCookieOptions)
-    .cookie('refresh_token', refreshToken, refreshCookieOptions)
-    .json(
-      new ApiResponse(
-        201,
-        "User registered successfully.",
-        user
-      )
-    )
-
-});
-
 export const loginController = catchAsync(async (req, res) => {
 
   const { user, accessToken, refreshToken } = await authService.login(req.body);

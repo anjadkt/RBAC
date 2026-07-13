@@ -1,4 +1,3 @@
-import Role from "./role.model";
 import { catchAsync } from "../../utils/catchAsync";
 import ApiResponse from "../../utils/ApiResponse";
 import * as roleService from './role.service';
@@ -25,9 +24,10 @@ export const updateRole = catchAsync(async (req, res) => {
 
 export const getRoles = catchAsync(async (req, res) => {
 
-  const query = req.user?.isSuperAdmin ? { name: { $ne: "SUPER_ADMIN" } } : { isSystem: false };
-
-  const roles = await Role.find(query).populate("permissions", "label description");
+  const roles = await roleService.getRoles(
+    req.user?.userId as string,
+    req.user?.isSuperAdmin || false
+  );
 
   res.json(new ApiResponse(200, "Roles fetched successfully.", roles));
 

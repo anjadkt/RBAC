@@ -6,7 +6,7 @@ type Permission = {
   code?: string
 }
 
-function authorize(...allowedPermissions: string[]) {
+function requirePermission(...allowedPermissions: string[]) {
 
   return async (req: Request, _res: Response, next: NextFunction) => {
 
@@ -38,4 +38,4 @@ function authorize(...allowedPermissions: string[]) {
   }
 }
 
-export default authorize
+export default requirePermission

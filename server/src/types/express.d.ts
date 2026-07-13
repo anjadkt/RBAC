@@ -7,10 +7,11 @@ declare global {
         userId: string
         email: string
         role?: unknown
-        isSuperAdmin ?: boolean
+        isSuperAdmin?: boolean
+        isActive: boolean
       }
     }
   }
 }
 
-export {}
+export { }

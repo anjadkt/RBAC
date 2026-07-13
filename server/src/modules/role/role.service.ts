@@ -1,4 +1,5 @@
 import ApiError from "../../utils/ApiError";
+import User from "../auth/user.model";
 import Permission from "../permission/permission.model";
 import Role from "./role.model";
 import { RolePayload } from "./role.validate";
@@ -45,4 +46,19 @@ export const update = async (payload: Partial<RolePayload>, roleId: string) => {
     if (!role) throw new ApiError(404, "Role not found!");
 
     return role;
+}
+
+export const getRoles = async (userId: string, isSuperAdmin: boolean) => {
+
+    const user = await User.findById(userId).populate("role", "level");
+    if (!user) throw new ApiError(403, "Not allowed to access this resource");
+
+    const query =
+        isSuperAdmin ?
+            { name: { $ne: "SUPER_ADMIN" } } :
+            { level: { $gte: (user.role as any).level }, isSystem: false };
+
+    const roles = await Role.find(query).populate("permissions", "_id label description");
+
+    return roles;
 }

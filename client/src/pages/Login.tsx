@@ -1,15 +1,25 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
+import api from '../utils/api'
 
 function Login() {
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [password, setPassword] = useState('');
 
-  function handleLogin(event: FormEvent<HTMLFormElement>) {
+  const navigate = useNavigate()
+
+  async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    console.log('Logging in with:', { email, password })
+    try{
+      await api.post("/login",{ email, password });
+
+      navigate('/root');
+    }catch(error){
+      console.log("error in register:",error);
+    }
+
   }
 
   return (

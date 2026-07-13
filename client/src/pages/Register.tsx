@@ -1,16 +1,25 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Link } from 'react-router'
+import { Link, useNavigate } from 'react-router'
+import api from '../utils/api'
 
 function Register() {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [password, setPassword] = useState('');
 
-  function handleRegister(event: FormEvent<HTMLFormElement>) {
+  const navigate = useNavigate()
+
+  async function handleRegister(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    console.log('Registering user:', { name, email, password })
+    try{
+      await api.post("/register",{ name, email, password });
+      navigate("/root")
+    }catch(error){
+      console.log("error in register:",error);
+    }
+
   }
 
   return (

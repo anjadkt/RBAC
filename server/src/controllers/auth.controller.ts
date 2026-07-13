@@ -48,7 +48,7 @@ export const register = async (req: Request, res: Response) => {
       return res.status(409).json({ message: 'An account with this email already exists.' })
     }
 
-    const hashedPass = await bcrypt.hash(password,10);
+    const hashedPass = await bcrypt.hash(password.toString(),10);
 
     const role = await Role.findOne({ name : "patient"});
 
@@ -69,8 +69,11 @@ export const register = async (req: Request, res: Response) => {
       user: { id: user._id, name: user.name, email: user.email },
     })
 
-  } catch {
-    return res.status(500).json({ message: 'Server error.' })
+  } catch (error) {
+
+    console.log(error)
+    
+    return res.status(500).json({ message: 'Server error.', error })
   }
 }
 
@@ -90,7 +93,7 @@ export const login = async (req: Request, res: Response) => {
       return res.status(401).json({ message: 'Invalid email or password.' })
     }
 
-    const isVerified = await bcrypt.compare(password,user.password);
+    const isVerified = await bcrypt.compare(password.toString(),user.password);
     if(!isVerified) return res.status(401).json({ message: 'Invalid email or password.' })
 
     const accessToken = createAccessToken({ 
@@ -107,8 +110,9 @@ export const login = async (req: Request, res: Response) => {
       message: 'Login successful.',
       user: { id: user._id, name: user.name, email: user.email },
     })
-  } catch {
-    return res.status(500).json({ message: 'Server error.' })
+  } catch ( error ) {
+    console.log(error)
+    return res.status(500).json({ message: 'Server error.', error })
   }
 }
 

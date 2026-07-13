@@ -8,6 +8,7 @@ import { login, logout, register } from "./controllers/auth.controller";
 import { authenticate } from "./middlewares/auth.middleware";
 import { createRole, getRoles } from "./controllers/role.controller";
 import { authorize } from "./middlewares/permission.middleware";
+import { createPermission, getPermissions } from "./controllers/permission.controller";
 
 const app = express();
 
@@ -37,7 +38,8 @@ app.get("/logout", authenticate, logout);
 app.get("/roles", authenticate, authorize("users.roles.view"), getRoles);
 app.post("/roles", authenticate, authorize("users.roles.create"), createRole);
 
-app.get("/permission", authenticate, authorize("users.permission.view"), )
+app.get("/permissions", authenticate, authorize("users.permissions.view"), getPermissions);
+app.post("/permissions", authenticate, authorize("users.permissions.create"), createPermission)
 
 
 

@@ -12,6 +12,9 @@ export const createRole = async (req:Request, res:Response) => {
 
     if(!isSuperAdmin && isSystem) return res.status(403).json({message : "Not allowed to create this role!"});
 
+    const isAlready = await Role.findOne({name}).lean();
+    if(isAlready)return res.status(409).json({message : "Role already exist!"});
+
     const query = isSuperAdmin ? {_id : { $in : permissions }} : { _id : { $in : permissions }, isSystem : false }
 
     const validPermissions = await Permission.find(query);
@@ -30,7 +33,8 @@ export const createRole = async (req:Request, res:Response) => {
     });
 
   }catch(error){
-    res.status(500).json({message : "Server Error!"});
+    console.log(error);
+    res.status(500).json({message : "Server Error!", error});
   }
 }
 

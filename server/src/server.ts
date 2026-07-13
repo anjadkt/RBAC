@@ -5,6 +5,9 @@ import env from "./config/env";
 import cookieParser from 'cookie-parser'
 
 import { login, logout, register } from "./controllers/auth.controller";
+import { authenticate } from "./middlewares/auth.middleware";
+import { createRole, getRoles } from "./controllers/role.controller";
+import { authorize } from "./middlewares/permission.middleware";
 
 const app = express();
 
@@ -29,7 +32,13 @@ app.use(cookieParser());
 
 app.post("/register", register);
 app.post("/login", login);
-app.post("/logout", logout);
+app.get("/logout", authenticate, logout);
+
+app.get("/roles", authenticate, authorize("users.roles.view"), getRoles);
+app.post("/roles", authenticate, authorize("users.roles.create"), createRole);
+
+app.get("/permission", authenticate, authorize("users.permission.view"), )
+
 
 
 

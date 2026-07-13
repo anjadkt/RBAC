@@ -5,7 +5,6 @@ import MainLayout from './layout/MainLayout'
 
 function App() {
   return (
-    <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -16,7 +15,6 @@ function App() {
           <Route path='/permissions' element={<></>} />
         </Route>
       </Routes>
-    </BrowserRouter>
   )
 }
 

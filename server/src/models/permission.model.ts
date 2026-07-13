@@ -8,6 +8,10 @@ const permissionSchema = new Schema(
       unique: true,
     },
 
+    label : {
+      type :String
+    },
+
     module: {
       type: String,
       required: true,
@@ -16,6 +20,11 @@ const permissionSchema = new Schema(
     action: {
       type: String,
       required: true,
+    },
+
+    isSystem : {
+      type : Boolean,
+      default : false
     },
 
     description: String,

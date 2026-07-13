@@ -3,12 +3,12 @@ import Role from '../modules/role/role.model'
 import ApiError from '../utils/ApiError'
 
 type Permission = {
-  name?: string
+  code?: string
 }
 
 function authorize(...allowedPermissions: string[]) {
 
-  return async (req: Request, res: Response, next: NextFunction) => {
+  return async (req: Request, _res: Response, next: NextFunction) => {
 
     if (!req.user) return next(new ApiError(401, "Authentication required."));
 
@@ -17,7 +17,7 @@ function authorize(...allowedPermissions: string[]) {
     try {
 
       const role = await Role.findById(req.user.role)
-        .populate('permissions', 'name')
+        .populate('permissions', 'code')
         .lean()
 
       if (!role) return next(new ApiError(403, "User role was not found."));
@@ -26,7 +26,7 @@ function authorize(...allowedPermissions: string[]) {
 
       const rolePermissions = (role.permissions ?? []) as Permission[]
       const hasPermission = rolePermissions.some((permission) =>
-        allowedPermissions.includes(permission.name ?? ''),
+        allowedPermissions.includes(permission.code ?? ''),
       )
 
       if (!hasPermission) return next(new ApiError(403, "You do not have permission for this action."));

@@ -1,39 +1,21 @@
 import { Schema, model } from "mongoose";
 
-const permissionSchema = new Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      unique: true,
-    },
+const permissionSchema = new Schema({
 
-    label : {
-      type :String
-    },
+  module: { type: Schema.Types.ObjectId, ref: 'Module', required: true },
 
-    module: {
-      type: String,
-      required: true,
-    },
+  operation: { type: Schema.Types.ObjectId, ref: 'Operation', required: true },
 
-    action: {
-      type: String,
-      required: true,
-    },
+  code: { type: String, required: true, unique: true },
 
-    isSystem : {
-      type : Boolean,
-      default : false
-    },
+  label: { type: String },
 
-    description: String,
-  },
-  {
-    timestamps: true,
-  }
-);
+  description: { type: String }
+
+}, { timestamps: true });
+
+permissionSchema.index({ module: 1, operation: 1 }, { unique: true });
 
 const Permission = model("Permission", permissionSchema);
 
-export default Permission ;
+export default Permission;

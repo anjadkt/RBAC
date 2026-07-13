@@ -13,7 +13,7 @@ const getEnv = (key:string) => {
 
 const env = {
   MONGO_URL : getEnv("MONGO_URL"),
-
+  JWT_SECRET : getEnv("JWT_SECRET")
 
 }
 

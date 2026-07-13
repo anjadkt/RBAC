@@ -1,6 +1,9 @@
 import express from "express"
 import mongoose from "mongoose"
+import cors from 'cors'
 import env from "./config/env";
+import cookieParser from 'cookie-parser'
+
 import { login, logout, register } from "./controllers/auth.controller";
 
 const app = express();
@@ -15,6 +18,14 @@ mongoose.connect(env.MONGO_URL)
 })
 
 .catch(() => console.log("DB connection failed!"));
+
+
+app.use(cors({
+  origin : "http://localhost:5173",
+  credentials : true
+}));
+app.use(express.json());
+app.use(cookieParser());
 
 app.post("/register", register);
 app.post("/login", login);

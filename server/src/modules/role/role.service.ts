@@ -7,7 +7,7 @@ import { RolePayload } from "./role.validate";
 
 export const create = async (payload: RolePayload) => {
 
-    const { name, permissions, description } = payload;
+    const { name, permissions, description, level, isSystem } = payload;
 
     const isAlready = await Role.findOne({ name }).lean();
     if (isAlready) throw new ApiError(409, "Role already exist!");
@@ -21,7 +21,9 @@ export const create = async (payload: RolePayload) => {
     const role = await Role.create({
         name,
         description,
-        permissions
+        permissions,
+        level,
+        isSystem
     });
 
     return role;

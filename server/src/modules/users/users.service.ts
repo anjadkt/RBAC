@@ -1,51 +1,90 @@
+import { PipelineStage } from "mongoose";
 import ApiError from "../../utils/ApiError";
 import User from "../auth/user.model"
 import Role from "../role/role.model";
 import { CreateUserPayload, UpdateUserPayload, UserQuery } from "./users.validation";
 
 
-export const getUsers = async (query: UserQuery) => {
+export const getUsers = async (query: UserQuery, userId: string) => {
 
-    const { page, limit, search, role, sort } = query;
+    const currentUser = await User.findById(userId)
+        .populate("role", "level")
+        .lean();
 
-    const filter: any = {};
+    if (!currentUser) {
+        throw new ApiError(404, "User not found");
+    }
+
+    const currentLevel = (currentUser.role as any).level;
+
+    const { search } = query;
+
+    const match: any = {
+        "role.level": { $gt: currentLevel },
+    };
 
     if (search) {
-        filter.$or = [
+        match.$or = [
             { name: { $regex: search, $options: "i" } },
             { email: { $regex: search, $options: "i" } },
         ];
     }
 
-    if (role) {
-        filter.role = role;
-    }
-
-    const skip = (page - 1) * limit;
-
-    const [users, total] = await Promise.all([
-
-        User.find(filter)
-            .populate("role")
-            .sort(sort)
-            .skip(skip)
-            .limit(limit)
-            .lean(),
-
-        User.countDocuments(filter),
-    ]);
-
-    return {
-        users,
-        pagination: {
-            page,
-            limit,
-            total,
-            totalPages: Math.ceil(total / limit),
+    const pipeline: PipelineStage[] = [
+        {
+            $lookup: {
+                from: "roles",
+                localField: "role",
+                foreignField: "_id",
+                as: "role",
+            },
         },
-    };
+        {
+            $unwind: "$role",
+        },
+        {
+            $match: match,
+        },
+        {
+            $sort: {
+                "role.level": 1,
+                name: 1,
+            },
+        },
+        {
+            $group: {
+                _id: "$role._id",
+                role: {
+                    $first: "$role.name",
+                },
+                users: {
+                    $push: {
+                        _id: "$_id",
+                        name: "$name",
+                        email: "$email",
+                        isActive: "$isActive",
+                        createdAt: "$createdAt",
+                    },
+                },
+            },
+        },
+        {
+            $project: {
+                _id: 0,
+                roleId: "$_id",
+                role: 1,
+                users: 1,
+            },
+        },
+        {
+            $sort: {
+                level: 1,
+            },
+        },
+    ]
 
-}
+    return await User.aggregate(pipeline);
+};
 
 export const getOneUser = async (userId: string, currentUserId: string) => {
 
@@ -97,7 +136,7 @@ export const createUser = async (payload: CreateUserPayload, userId: string) => 
 
     const currentUser = await User.findById(userId).populate("role");
 
-    if ((targetRole as any).level >= (currentUser?.role as any).level) {
+    if ((currentUser?.role as any).level >= (targetRole as any).level) {
         throw new ApiError(403, "You can't create this user");
     }
 
@@ -115,7 +154,7 @@ export const createUser = async (payload: CreateUserPayload, userId: string) => 
 
 export const updateUser = async (userId: string, payload: UpdateUserPayload, currentUserId: string,) => {
 
-    const { role, name } = payload;
+    const { role, name, isActive, } = payload;
 
     const same = userId === currentUserId;
 
@@ -126,19 +165,16 @@ export const updateUser = async (userId: string, payload: UpdateUserPayload, cur
 
         const currentUser = await User.findById(currentUserId).populate("role");
 
-        if ((targetRole as any).level >= (currentUser?.role as any).level) {
+        if (((currentUser?.role as any).level <= targetRole as any).level) {
             throw new ApiError(403, "You can't update this user");
         }
     }
 
-    const update: any = {};
-
-    if (name) update.name = name;
-    if (role) update.role = targetRole._id;
-
     const updatedUser = await User.findByIdAndUpdate(
         userId,
-        update,
+        {
+            $set: { name, role: targetRole._id, isActive }
+        },
         { new: true }
     ).select("-password -refreshToken -updatedAt -__v");
 
@@ -147,28 +183,5 @@ export const updateUser = async (userId: string, payload: UpdateUserPayload, cur
     // tell user via email ( optional )
 
     return updatedUser;
-}
-
-export const toggleStatus = async (userId: string, currentUserId: string) => {
-
-    const same = userId === currentUserId;
-
-    const targetUser = await User.findById(userId).populate("role isActive refreshToken");
-    if (!targetUser) throw new ApiError(404, "User not found");
-
-    if (same) throw new ApiError(403, "You can't toggle your own status");
-
-    const currentUser = await User.findById(currentUserId).populate("role");
-    if (!currentUser || !currentUser.role) throw new ApiError(403, "You can't toggle this user's status");
-
-    if ((targetUser.role as any).level >= (currentUser.role as any).level) throw new ApiError(403, "You can't toggle this user's status");
-
-    targetUser.isActive = !targetUser.isActive;
-    targetUser.refreshToken = "";
-    await targetUser.save();
-
-    // send email to user ( optional )
-
-    return targetUser;
 }
 

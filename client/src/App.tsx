@@ -12,6 +12,7 @@ import NotFound from './components/errors/NotFound'
 import ModuleManagement from './features/module/ModuleManagement'
 import OperationManagement from './features/operation/OperationManagement'
 import PermissionManagement from './features/permission/PermissionManagement'
+import UserManagement from './features/users/UserManagement'
 
 function App() {
   return (
@@ -40,7 +41,7 @@ function App() {
 
           <Route
             path="/users"
-            element={<PermissionRoute requiredPermission="users.view"><></></PermissionRoute>}
+            element={<PermissionRoute requiredPermission="users.view"><UserManagement /></PermissionRoute>}
           />
 
           <Route

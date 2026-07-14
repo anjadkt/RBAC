@@ -12,6 +12,7 @@ interface ExistingRole {
     description?: string;
     permissions?: string[];
     isSystem: boolean
+    level: number;
 }
 
 interface RoleFormProps {
@@ -25,16 +26,18 @@ type FormState = {
     description: string;
     permissions: string[];
     isSystem: boolean
+    level: number;
 };
 
-type FormErrors = Partial<Record<'name' | 'description' | 'permissions', string>>;
+type FormErrors = Partial<Record<'name' | 'description' | 'permissions' | "level" | "isSystem", string>>;
 
 function buildInitialForm(initialData?: ExistingRole): FormState {
     return {
         name: initialData?.name || '',
         description: initialData?.description || '',
         permissions: (initialData?.permissions || []),
-        isSystem: initialData?.isSystem ?? false
+        isSystem: initialData?.isSystem ?? false,
+        level: initialData?.level ?? 50
     };
 }
 
@@ -60,7 +63,7 @@ function RoleForm({ mode, initialData, onClose }: RoleFormProps) {
         load()
     }, [search]);
 
-    const handleTextChange = (field: 'name' | 'description') => (
+    const handleTextChange = (field: 'name' | 'description' | 'level') => (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         setForm((prev) => ({ ...prev, [field]: e.target.value }));
@@ -180,6 +183,28 @@ function RoleForm({ mode, initialData, onClose }: RoleFormProps) {
                         {errors.name && (
                             <p className="mt-1.5 text-xs font-semibold text-red-600 animate-in fade-in slide-in-from-top-1">
                                 {errors.name}
+                            </p>
+                        )}
+                    </div>
+
+                    <div>
+                        <label htmlFor="level" className="mb-2 block text-xs font-bold uppercase tracking-wider text-slate-500">
+                            Role Level
+                        </label>
+                        <input
+                            id="level"
+                            type="text"
+                            value={form.level}
+                            onChange={handleTextChange('level')}
+                            placeholder="e.g. 50"
+                            className={`w-full rounded-xl border bg-slate-50/40 px-4 py-3 text-sm text-slate-900 placeholder-slate-400 outline-none transition-all duration-200 focus:bg-white focus:ring-4 ${errors.name
+                                ? 'border-red-300 focus:ring-red-500/10 focus:border-red-500'
+                                : 'border-slate-200 focus:ring-indigo-600/10 focus:border-indigo-600'
+                                }`}
+                        />
+                        {errors.level && (
+                            <p className="mt-1.5 text-xs font-semibold text-red-600 animate-in fade-in slide-in-from-top-1">
+                                {errors.level}
                             </p>
                         )}
                     </div>

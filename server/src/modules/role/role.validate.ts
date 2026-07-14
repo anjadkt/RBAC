@@ -28,6 +28,11 @@ const roleBodySchema = z.object({
     isSystem: z
         .boolean()
         .default(false),
+
+    level: z.coerce
+        .number()
+        .int("Level must be an integer")
+        .gt(0, "Level must be greater than 0")
 });
 
 export const roleSchema = z.object({

@@ -6,11 +6,7 @@ const objectId = z.string().refine(Types.ObjectId.isValid, {
 });
 
 const querySchema = z.object({
-    page: z.coerce.number().int().min(1).default(1),
-    limit: z.coerce.number().int().min(1).max(100).default(10),
-    search: z.string().trim().optional(),
-    role: objectId.optional(),
-    sort: z.enum(["name", "-name", "createdAt", "-createdAt"]).default("-createdAt"),
+    search: z.string().trim().optional()
 });
 
 
@@ -44,8 +40,25 @@ export type CreateUserPayload = z.infer<typeof userSchema>;
 
 // update users
 
+
+const updateSchema = z.object({
+    name: z
+        .string()
+        .trim()
+        .min(3, "Username must be at least 3 characters")
+        .max(50)
+        .toLowerCase(),
+
+    role: objectId,
+
+    isActive: z.coerce
+        .boolean()
+        .default(true),
+
+}).strip();
+
 export const updateUserSchema = z.object({
-    body: userSchema.omit({ email: true }).partial(),
+    body: updateSchema,
     params: z.object({
         id: objectId
     })

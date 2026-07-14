@@ -9,7 +9,8 @@ const initialState = {
   name: "",
   description: "",
   permissions: [],
-  isSystem: false
+  isSystem: false,
+  level: 50
 }
 
 export default function RoleManagement() {

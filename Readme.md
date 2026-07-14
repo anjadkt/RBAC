@@ -12,7 +12,7 @@ permissions can be added at runtime.
 |---|---|
 | Frontend (Vercel) | https://rbac-dun.vercel.app |
 | Backend API (Render) | https://rbac-bycs.onrender.com |
-| API Docs (Postman) | [https://tinyurl.com/postmanrbac] |
+| API Docs (Postman) | https://tinyurl.com/postmanrbac |
 | GitHub Repository | https://github.com/anjadkt/RBAC.git |
 
 ## 🔑 Demo Credentials

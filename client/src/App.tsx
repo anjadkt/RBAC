@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast'
 import NotFound from './components/errors/NotFound'
 import ModuleManagement from './features/module/ModuleManagement'
 import OperationManagement from './features/operation/OperationManagement'
+import PermissionManagement from './features/permission/PermissionManagement'
 
 function App() {
   return (
@@ -59,7 +60,7 @@ function App() {
 
           <Route
             path="/permissions"
-            element={<PermissionRoute requiredPermission="rbac.permission.view"><></></PermissionRoute>}
+            element={<PermissionRoute requiredPermission="rbac.permission.view"><PermissionManagement /></PermissionRoute>}
           />
 
           <Route

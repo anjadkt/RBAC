@@ -7,8 +7,8 @@ import { createModule, getModule } from "./module.controller";
 
 const router = Router();
 
-router.get("/", authenticate, requirePermission("module.view"), getModule)
-router.post("/", authenticate, requirePermission("module.create"), validate(moduleSchema), createModule);
+router.get("/", authenticate, requirePermission("rbac.module.view"), getModule)
+router.post("/", authenticate, requirePermission("rbac.module.create"), validate(moduleSchema), createModule);
 
 
 

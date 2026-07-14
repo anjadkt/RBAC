@@ -7,8 +7,8 @@ import { operationSchema } from "./operation.validation";
 
 const router = Router();
 
-router.get("/", authenticate, requirePermission("operation.view"), getOperations)
-router.post("/", authenticate, requirePermission("operation.create"), validate(operationSchema), createOperation);
+router.get("/", authenticate, requirePermission("rbac.operation.view"), getOperations)
+router.post("/", authenticate, requirePermission("rbac.operation.create"), validate(operationSchema), createOperation);
 
 
 export default router;

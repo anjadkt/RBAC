@@ -9,8 +9,8 @@ const router = Router();
 
 router.use(authenticate);
 
-router.get("/", requirePermission("permissions.view"), getPermissions);
-router.post("/", requirePermission("permissions.create"), validate(permissionSchema), createPermission);
+router.get("/", requirePermission("rbac.permission.view"), getPermissions);
+router.post("/", requirePermission("rbac.permission.create"), validate(permissionSchema), createPermission);
 
 
 export default router;

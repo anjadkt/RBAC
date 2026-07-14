@@ -7,8 +7,8 @@ import { roleSchema, roleUpdateSchema } from "./role.validate";
 
 const router = Router();
 
-router.get("/", authenticate, requirePermission("role.view"), getRoles);
-router.post("/", authenticate, requirePermission("role.create"), validate(roleSchema), createRole);
-router.patch("/:roleId", authenticate, requirePermission("role.update"), validate(roleUpdateSchema), updateRole);
+router.get("/", authenticate, requirePermission("rbac.role.view"), getRoles);
+router.post("/", authenticate, requirePermission("rbac.role.create"), validate(roleSchema), createRole);
+router.patch("/:roleId", authenticate, requirePermission("rbac.role.update"), validate(roleUpdateSchema), updateRole);
 
 export default router;

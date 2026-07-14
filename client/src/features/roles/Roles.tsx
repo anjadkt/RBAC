@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
-import RoleComp, { type Role } from '../components/RoleComp'
-import api from '../utils/api'
+import type { Role } from '../../components/RoleComp';
+import api from '../../utils/api';
+import RoleComp from '../../components/RoleComp';
+
 
 export default function Roles() {
   const [roles, setRoles] = useState<Role[] | null>(null);
@@ -13,7 +15,7 @@ export default function Roles() {
         const { data } = await api.get<{ response: Role[] }>('/roles')
         setRoles(data.response)
       } catch (error) {
-        console.log("Error while loading roles",error)
+        console.log("Error while loading roles", error)
       } finally {
         setIsLoading(false)
       }

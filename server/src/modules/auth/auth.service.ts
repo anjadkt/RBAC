@@ -13,10 +13,10 @@ export const login = async (payload: Omit<RegisterPayload, "name">) => {
     const { email, password } = payload;
 
     const user = await User.findOne({ email });
-    if (!user) throw new ApiError(401, "Invalid email or password.");
+    if (!user) throw new ApiError(400, "Invalid email or password.");
 
     const isVerified = await bcrypt.compare(password.toString(), user.password || "");
-    if (!isVerified) throw new ApiError(401, "Invalid email or password.");
+    if (!isVerified) throw new ApiError(400, "Invalid email or password.");
 
     const accessToken = createAccessToken({
         userId: user._id.toString(),

@@ -71,7 +71,7 @@ export function AuthProvider({ children }: Props) {
 
     const refreshUser = async () => {
         try {
-            const { data } = await api.get("/me");
+            const { data } = await api.get("/auth/me");
 
             const permissions = new Set(data.response.role.permissions.map((p: Permission) => p.code));
 

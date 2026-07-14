@@ -9,56 +9,56 @@ export const NAV_ITEMS = [
     },
 
     {
-        title: "Users Management",
+        title: "Users",
         to: "/users",
         icon: Users,
-        permission: "user.view",
+        permission: "users.view",
     },
 
     {
-        title: "Employee Management",
+        title: "Employee",
         to: "/employees",
         icon: Briefcase,
         permission: "employee.view",
     },
 
     {
-        title: "Attendance Management",
+        title: "Attendance",
         to: "/attendance",
         icon: Calendar,
         permission: "attendance.view",
     },
 
     {
-        title: "Leave Management",
+        title: "Leave",
         to: "/leave",
         icon: Plane,
         permission: "leave.view",
     },
 
     {
-        title: "Roles Management",
+        title: "Roles",
         to: "/roles",
         icon: Shield,
         permission: "rbac.role.view",
     },
 
     {
-        title: "Permissions Management",
+        title: "Permissions",
         to: "/permissions",
         icon: Key,
         permission: "rbac.permission.view",
     },
 
     {
-        title: "Modules Management",
+        title: "Modules",
         to: "/modules",
         icon: Boxes,
         permission: "rbac.module.view",
     },
 
     {
-        title: "Operations Management",
+        title: "Operations",
         to: "/operations",
         icon: Cog,
         permission: "rbac.operation.view",

@@ -1,21 +1,35 @@
 import { Navigate, Route, Routes } from 'react-router'
-import Login from './pages/Login'
-import Register from './pages/Register'
 import MainLayout from './layout/MainLayout'
-import Roles from './pages/Roles'
+import Login from './features/auth/Login'
+import Roles from './features/roles/Roles'
+import PublicRoute from './routes/PublicRoute'
+import RootRedirect from './routes/RootRedirect'
+import { ProtectedRoute } from './routes/ProtectedRoute'
+import { AccessDenied } from './components/errors/AccessDenied'
+import { PermissionRoute } from './routes/PermissionRote'
 
 function App() {
   return (
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
+    <Routes>
 
-        <Route element={<MainLayout />}>
-          <Route path='/roles' element={<Roles />} />
-          <Route path='/permissions' element={<></>} />
-        </Route>
-      </Routes>
+      <Route path="*" element={<Navigate to="/root" replace />} />
+      <Route path='/root' element={<RootRedirect />} />
+      <Route path='/access-denied' element={<AccessDenied />} />
+
+      <Route element={<PublicRoute />}>
+        <Route path="/login" element={<Login />} />
+      </Route>
+
+      <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
+
+        <Route
+          path='/roles'
+          element={<PermissionRoute requiredPermission='rbac.role.view'><Roles /></PermissionRoute>}
+        />
+        <Route path='/permissions' element={<></>} />
+
+      </Route>
+    </Routes >
   )
 }
 

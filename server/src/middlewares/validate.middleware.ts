@@ -13,8 +13,6 @@ export const validate =
                 });
 
                 req.body = validated.body;
-                req.params = validated.params as typeof req.params;
-                req.query = validated.query as typeof req.query;
 
                 next();
             } catch (error) {

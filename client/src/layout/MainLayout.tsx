@@ -1,16 +1,15 @@
-import Header from '../components/Header'
+import Header from '../components/layout/Header'
 import { Outlet } from 'react-router'
-import SideBar from '../components/SideBar'
-
-const links = [
-  { label: 'Dashboard', to: '/dashboard' },
-  { label: 'Users', to: '/users' },
-]
+import SideBar from '../components/layout/SideBar'
+import { useAuth } from '../context/AuthContext';
 
 export default function MainLayout() {
+
+  const { user, navLinks } = useAuth();
+
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <SideBar links={links} />
+      <SideBar title={user.role.name} links={navLinks} />
 
       <div className="flex min-w-0 flex-1 flex-col">
         <Header />

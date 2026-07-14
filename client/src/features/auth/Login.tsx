@@ -1,25 +1,30 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router'
-import api from '../utils/api'
-import { useAuth } from '../context/AuthContext'
+import { Link, useLocation, useNavigate } from 'react-router'
+import { useAuth } from '../../context/AuthContext';
+import api from '../../utils/api';
+
 
 function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('');
-  const {login} = useAuth()
+  const { login } = useAuth()
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   async function handleLogin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
-    try{
-      await api.post("/login",{ email, password });
+    try {
+      await api.post("/login", { email, password });
       await login();
-      navigate('/root');
-    }catch(error){
-      console.log("error in register:",error);
+
+      const redirectTo = (location.state as { from?: Location })?.from?.pathname || '/root';
+      navigate(redirectTo, { replace: true });
+
+    } catch (error) {
+      console.log("error in register:", error);
     }
 
   }

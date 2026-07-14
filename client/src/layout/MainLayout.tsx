@@ -10,7 +10,7 @@ export default function MainLayout() {
     <div className="flex min-h-screen bg-gray-100">
       <SideBar title={user?.role?.name || "Role"} links={navLinks} />
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col pb-16 md:pb-0 md:ml-64">
         <main className="flex-1 p-6 sm:p-8">
           <Outlet />
         </main>

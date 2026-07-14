@@ -9,6 +9,7 @@ import { AccessDenied } from './components/errors/AccessDenied'
 import { PermissionRoute } from './routes/PermissionRote'
 import { Toaster } from 'react-hot-toast'
 import NotFound from './components/errors/NotFound'
+import ModuleManagement from './features/module/ModuleManagement'
 
 function App() {
   return (
@@ -62,7 +63,7 @@ function App() {
 
           <Route
             path="/modules"
-            element={<PermissionRoute requiredPermission="rbac.module.view"><></></PermissionRoute>}
+            element={<PermissionRoute requiredPermission="rbac.module.view"><ModuleManagement /></PermissionRoute>}
           />
 
           <Route

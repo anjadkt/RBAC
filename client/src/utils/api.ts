@@ -13,6 +13,7 @@ api.interceptors.response.use(
   (response) => response,
 
   async (error) => {
+
     const originalRequest = error.config;
 
     if (
@@ -28,7 +29,7 @@ api.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        await api.post("/auth/refresh");
+        await api.get("/auth/refresh");
 
         return api(originalRequest);
 

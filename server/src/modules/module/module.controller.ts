@@ -5,7 +5,7 @@ import ApiError from "../../utils/ApiError";
 
 export const getModule = catchAsync(async (_req, res) => {
 
-    const modules = await Module.find({}).lean();
+    const modules = await Module.find({}).select("-__v -updatedAt").lean();
 
     res.status(200).json(new ApiResponse(200, "Module fetched successfully.", modules));
 
@@ -20,6 +20,16 @@ export const createModule = catchAsync(async (req, res) => {
 
     const module = await Module.create({ name, code });
 
-    res.status(200).json(new ApiResponse(200, "Module created successfully.", module));
+    res.status(200).json(
+        new ApiResponse(
+            200,
+            "Module created successfully.",
+            {
+                name: module.name,
+                _id: module._id,
+                code: module.code,
+                createdAt: module.createdAt
+            }
+        ));
 
 });

@@ -62,10 +62,10 @@ export const getMe = async (userId: string) => {
 export const refresh = async (refreshToken: string) => {
 
     const decodedToken = jwt.verify(refreshToken, env.JWT_REFRESH_SECRET) as { userId: string }
-    if (!decodedToken) throw new ApiError(401, "Invalid or expired refresh token.");
+    if (!decodedToken) throw new ApiError(403, "Invalid or expired refresh token.");
 
     const user = await User.findById(decodedToken.userId);
-    if (!user) throw new ApiError(401, "Invalid or expired refresh token.");
+    if (!user) throw new ApiError(403, "Invalid or expired refresh token.");
 
     const accessToken = createAccessToken({
         userId: user._id.toString(),

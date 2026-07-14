@@ -114,7 +114,7 @@ export function AuthProvider({ children }: Props) {
                 login,
                 logout,
                 refreshUser,
-                navLinks
+                navLinks: navLinks ?? []
             }}
         >
             {children}

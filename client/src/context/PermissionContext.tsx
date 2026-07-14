@@ -15,11 +15,11 @@ export const PermissionProvider = ({ children }: { children: React.ReactNode }) 
 
     const { user, loading } = useAuth();
 
-    const permissions = user?.permissions;
+    const permissions = user?.permissions ?? new Set<string>();
 
-    const can = (code: string) => permissions?.has(code);
-    const canAny = (codes: string[]) => codes.some(code => permissions?.has(code));
-    const canAll = (codes: string[]) => codes.every(code => permissions?.has(code));
+    const can = (code: string) => permissions.has(code);
+    const canAny = (codes: string[]) => codes.some(code => permissions.has(code));
+    const canAll = (codes: string[]) => codes.every(code => permissions.has(code));
 
     return (
         <PermissionContext.Provider value={{ permissions, can, canAny, canAll, loading }}>

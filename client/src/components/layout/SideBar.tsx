@@ -32,7 +32,7 @@ function SideBar({ links, title }: SideBarProps) {
       await logout();
 
       Toast.success("Logout Success");
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       Toast.error("Logout failed");
     } finally {

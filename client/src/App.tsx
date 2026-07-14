@@ -20,7 +20,7 @@ function App() {
         <Route path='/access-denied' element={<AccessDenied />} />
 
         <Route element={<PublicRoute />}>
-          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
         </Route>
 
         <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>

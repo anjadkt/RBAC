@@ -51,6 +51,8 @@ function Login() {
       const redirectTo = (location.state as { from?: Location })?.from?.pathname || '/root';
       navigate(redirectTo, { replace: true });
 
+      Toast.success("Login success");
+
     } catch (error: any) {
       Toast.error("Login failed!");
       if (error.response.status === 400) {

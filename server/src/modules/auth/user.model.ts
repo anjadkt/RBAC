@@ -16,14 +16,14 @@ const userSchema = new Schema(
 
     isActive: {
       type: Boolean,
-      default: false
+      default: true
     },
 
-    expiresAt: {
-      type: Date,
-      default: () => new Date(Date.now() + 5 * 60 * 1000),
-      index: { expires: 0 },
-    }
+    // expiresAt: {
+    //   type: Date,
+    //   default: () => new Date(Date.now() + 5 * 60 * 1000),
+    //   index: { expires: 0 },
+    // }
   },
   { timestamps: true },
 )

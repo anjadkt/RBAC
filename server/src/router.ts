@@ -15,7 +15,8 @@ router.use("/role", roleRoutes);
 router.use("/module", moduleRoutes);
 router.use("/operation", operationRoutes);
 router.use("/users", usersRoutes);
-router.use("/employee", employeeRoutes)
+router.use("/employee", employeeRoutes);
+
 
 
 export default router;

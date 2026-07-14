@@ -169,6 +169,7 @@ npm run dev
 
 ## 🧩 Modules Implemented
 
+- [x] auth (Login, Logout, Refresh, Me)
 - [x] users Management (View, Create, Update)
 - [x] Module Management (View, Create)
 - [x] Permission Management (View, Create)

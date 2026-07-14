@@ -5,7 +5,7 @@ import Operation from "./operation.modal";
 
 export const getOperations = catchAsync(async (_req, res) => {
 
-    const operations = await Operation.find({}).lean();
+    const operations = await Operation.find({}).select("-updatedAt -__v").lean();
 
     res.status(200).json(new ApiResponse(200, "Operation fetched successfully.", operations));
 
@@ -20,6 +20,19 @@ export const createOperation = catchAsync(async (req, res) => {
 
     const operation = await Operation.create({ name, code });
 
-    res.status(200).json(new ApiResponse(200, "Operation created successfully.", operation));
+    res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                "Operation created successfully.",
+                {
+                    _id: operation._id,
+                    name: operation.name,
+                    createdAt: operation.createdAt,
+                    code: operation.code
+                }
+            )
+        );
 
 });

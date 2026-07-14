@@ -169,17 +169,40 @@ npm run dev
 
 ## 🧩 Modules Implemented
 
-- [x] auth (Login, Logout, Refresh, Me)
+- [x] Authentication (Login, Logout, Refresh, Current User)
 - [x] users Management (View, Create, Update)
 - [x] Module Management (View, Create)
 - [x] Permission Management (View, Create)
 - [x] Operation Management (View, Create)
-- [x] Role Management (View, Create)
+- [x] Role Management (View, Create, Update)
 - [ ] Attendance Management *(not implemented)*
 - [ ] Leave Management *(not implemented)*
 - [ ] Asset Management *(not implemented)*
 - [ ] Payroll *(not implemented)*
 
+## Functionalities Implemented
+
+- [x] Cookie-based JWT authentication with login, logout, refresh-token renewal, and authenticated-user (`/me`) retrieval.
+- [x] Automatic access-token refresh and session restoration when the frontend loads.
+- [x] Dynamic, database-driven RBAC: modules, operations, and permissions can be created at runtime and assigned to roles.
+- [x] Backend authorization middleware protects every implemented management endpoint and supports Super Administrator access.
+- [x] Frontend permission guards protect routes, filter navigation items, and show an access-denied page for unauthorized users.
+- [x] Role hierarchy restricts users to viewing, creating, and managing lower-level roles/accounts.
+- [x] User directory groups accounts by role and supports user creation, role assignment, profile updates, and active/inactive status changes.
+- [x] Role creation and editing, including permission assignment and permission search while configuring a role.
+- [x] Module, operation, and permission listing/creation screens, with permission-aware create controls.
+- [x] Zod validation on client forms and server requests, standardized API responses/errors, password hashing, and security middleware (CORS, Helmet, Morgan).
+- [x] Seed script that creates demo roles, users, modules, operations, and permission mappings.
+
+### Planned / Not Yet Implemented
+
+- [ ] Employee record CRUD and employee-management UI (only model/validation scaffolding exists).
+- [ ] Attendance workflows and attendance UI/API.
+- [ ] Leave-request workflows and leave UI/API.
+- [ ] Dashboard content.
+- [ ] Asset and payroll modules.
+
+---
 ---
 
 ## 📌 What Was Not Completed

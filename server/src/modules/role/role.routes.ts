@@ -7,7 +7,7 @@ import { roleSchema, roleUpdateSchema } from "./role.validate";
 
 const router = Router();
 
-router.get("/", authenticate, requirePermission("rbac.role.view"), getRoles);
+router.get("/", authenticate, requirePermission("rbac.role.view", "role.view"), getRoles);
 router.post("/", authenticate, requirePermission("rbac.role.create"), validate(roleSchema), createRole);
 router.patch("/:roleId", authenticate, requirePermission("rbac.role.update"), validate(roleUpdateSchema), updateRole);
 

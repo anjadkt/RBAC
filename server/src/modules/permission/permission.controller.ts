@@ -4,8 +4,24 @@ import ApiResponse from "../../utils/ApiResponse";
 import * as permissionService from "./permission.service";
 
 
-export const getPermissions = catchAsync(async (_req, res) => {
+export const getPermissions = catchAsync(async (req, res) => {
+
+  const search = req.query.search;
+
+  const matchStage = search
+    ? {
+      $match: {
+        $or: [
+          { name: { $regex: search, $options: "i" } },
+          { code: { $regex: search, $options: "i" } },
+          { label: { $regex: search, $options: "i" } },
+        ],
+      },
+    }
+    : { $match: {} };
+
   const permissions = await Permission.aggregate([
+    matchStage,
     {
       $lookup: {
         from: "modules",

@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router'
 import MainLayout from './layout/MainLayout'
 import Login from './features/auth/Login'
-import Roles from './features/roles/Roles'
+import RoleManagement from './features/roles/RoleManagement'
 import PublicRoute from './routes/PublicRoute'
 import RootRedirect from './routes/RootRedirect'
 import { ProtectedRoute } from './routes/ProtectedRoute'
@@ -30,7 +30,7 @@ function App() {
 
           <Route
             path='/roles'
-            element={<PermissionRoute requiredPermission='rbac.role.view'><Roles /></PermissionRoute>}
+            element={<PermissionRoute requiredPermission='rbac.role.view'><RoleManagement /></PermissionRoute>}
           />
 
           <Route

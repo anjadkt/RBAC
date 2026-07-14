@@ -52,8 +52,6 @@ export default function PermissionCreate({ onClose, onCreated }: PermissionCreat
     const [operations, setOperations] = useState<OperationType[]>([]);
     const [isLoadingOptions, setIsLoadingOptions] = useState(true);
 
-    console.log(form);
-
     useEffect(() => {
         const fetchOptions = async () => {
             setIsLoadingOptions(true);

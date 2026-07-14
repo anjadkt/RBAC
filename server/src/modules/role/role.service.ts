@@ -53,12 +53,11 @@ export const getRoles = async (userId: string, isSuperAdmin: boolean) => {
     const user = await User.findById(userId).populate("role", "level");
     if (!user) throw new ApiError(403, "Not allowed to access this resource");
 
-    const query =
-        isSuperAdmin ?
-            { name: { $ne: "SUPER_ADMIN" } } :
-            { level: { $gte: (user.role as any).level }, isSystem: false };
+    const query = isSuperAdmin
+        ? { level: { $neq: 0 } }
+        : { level: { $gt: (user.role as any).level }, isSystem: false };
 
-    const roles = await Role.find(query).populate("permissions", "_id label description");
+    const roles = await Role.find(query).select("-__v -updatedAt").populate("permissions", "_id label description");
 
     return roles;
 }

@@ -21,7 +21,7 @@ async function authenticate(req: Request, _res: Response, next: NextFunction) {
     const payload = jwt.verify(token, env.JWT_ACCESS_SECRET) as AuthTokenPayload
     if (!payload) return next(new ApiError(401, "Invalid or expired authentication token."));
 
-    const user = await User.findById(payload.userId).select("_id isActive role isSuperAdmin refreshToken").lean()
+    const user = await User.findById(payload.userId).select("_id email isActive role isSuperAdmin refreshToken").lean()
     if (!user) return next(new ApiError(401, "Invalid or expired authentication token."));
     if (!user.isActive || !user.refreshToken) return next(new ApiError(403, "You are currently inactive or logged out. Please log in again."));
 
@@ -29,7 +29,8 @@ async function authenticate(req: Request, _res: Response, next: NextFunction) {
       userId: user._id.toString(),
       email: user.email,
       role: user.role,
-      isSuperAdmin: user.isSuperAdmin || false
+      isSuperAdmin: user.isSuperAdmin || false,
+      isActive: user.isActive
     }
 
     return next();

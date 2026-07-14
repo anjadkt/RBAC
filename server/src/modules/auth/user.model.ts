@@ -10,8 +10,7 @@ const userSchema = new Schema(
       ref: "Role"
     },
     isSuperAdmin: {
-      type: Boolean,
-      default: false
+      type: Boolean
     },
     refreshToken: String,
 
@@ -28,6 +27,8 @@ const userSchema = new Schema(
   },
   { timestamps: true },
 )
+
+userSchema.index({ isSuperAdmin: 1 }, { unique: true, partialFilterExpression: { isSuperAdmin: true } })
 
 const User = model('User', userSchema)
 

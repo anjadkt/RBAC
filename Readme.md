@@ -203,3 +203,101 @@ npm run dev
 - [ ] Asset and payroll modules.
 
 ---
+
+# Database Schema
+
+## User
+
+| Field | Type | Required | Reference | Default |
+|-------|------|----------|-----------|---------|
+| name | String | ✅ | — | — |
+| email | String | ✅ | — | — |
+| password | String | ❌ | — | — |
+| role | ObjectId | ❌ | Role | — |
+| isSuperAdmin | Boolean | ❌ | — | — |
+| refreshToken | String | ❌ | — | — |
+| isActive | Boolean | ❌ | — | `true` |
+| createdAt | Date | Auto | — | — |
+| updatedAt | Date | Auto | — | — |
+
+**Indexes**
+- `email` → Unique
+- Partial unique index on `isSuperAdmin` (Only one Super Admin can exist)
+
+---
+
+## Module
+
+| Field | Type | Required | Reference | Default |
+|-------|------|----------|-----------|---------|
+| name | String | ✅ | — | — |
+| code | String | ✅ | — | — |
+| createdAt | Date | Auto | — | — |
+| updatedAt | Date | Auto | — | — |
+
+**Indexes**
+- `code` → Unique
+
+---
+
+## Operation
+
+| Field | Type | Required | Reference | Default |
+|-------|------|----------|-----------|---------|
+| name | String | ✅ | — | — |
+| code | String | ✅ | — | — |
+| createdAt | Date | Auto | — | — |
+| updatedAt | Date | Auto | — | — |
+
+**Indexes**
+- `code` → Unique
+
+---
+
+## Permission
+
+| Field | Type | Required | Reference | Default |
+|-------|------|----------|-----------|---------|
+| module | ObjectId | ✅ | Module | — |
+| operation | ObjectId | ✅ | Operation | — |
+| code | String | ✅ | — | — |
+| label | String | ❌ | — | — |
+| description | String | ❌ | — | — |
+| createdAt | Date | Auto | — | — |
+| updatedAt | Date | Auto | — | — |
+
+**Indexes**
+- `code` → Unique
+
+---
+
+## Role
+
+| Field | Type | Required | Reference | Default |
+|-------|------|----------|-----------|---------|
+| name | String | ✅ | — | — |
+| description | String | ❌ | — | — |
+| permissions | ObjectId[] | ❌ | Permission | `[]` |
+| isSystem | Boolean | ❌ | — | `false` |
+| level | Number | ❌ | — | `100` |
+| createdAt | Date | Auto | — | — |
+| updatedAt | Date | Auto | — | — |
+
+**Indexes**
+- `name` → Unique
+
+---
+
+## Relationships
+
+```text
+User
+ └── Role
+
+Role
+ └── Permission[]
+
+Permission
+ ├── Module
+ └── Operation
+```

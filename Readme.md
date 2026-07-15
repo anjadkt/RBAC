@@ -196,7 +196,7 @@ npm run dev
 
 ### Planned / Not Yet Implemented
 
-- [ ] Employee record CRUD and employee-management UI (only model/validation scaffolding exists).
+- [ ] Employee record CRUD and employee-management UI.
 - [ ] Attendance workflows and attendance UI/API.
 - [ ] Leave-request workflows and leave UI/API.
 - [ ] Dashboard content.
